@@ -44,7 +44,7 @@ const Banner = () => {
               <SearchField.Group className={"bg-transparent"}>
                 <SearchField.SearchIcon />
                 <SearchField.Input
-                  className="w-full"
+                  className="w-full text-white placeholder:text-white placeholder:opacity-80"
                   placeholder="Job title, skill or company"
                 />
                 <SearchField.ClearButton />
@@ -60,7 +60,7 @@ const Banner = () => {
                 </SearchField.SearchIcon>
 
                 <SearchField.Input
-                  className="w-full"
+                  className="w-full text-white placeholder:text-white placeholder:opacity-80"
                   placeholder="Location or Remote"
                 />
                 <SearchField.ClearButton />

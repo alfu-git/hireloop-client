@@ -22,10 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      data-theme="dark"
-      className={`${manrope.variable} ${inter.variable} h-full dark antialiased`}
+      className={`${manrope.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-secondary">
+      <body className="min-h-full flex flex-col font-secondary bg-[#010103]">
         <Navbar />
         <main>{children}</main>
         <Footer />

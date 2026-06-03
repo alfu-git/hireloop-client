@@ -29,12 +29,12 @@ const Stats = () => {
   ];
 
   return (
-    <section className="overflow-hidden">
+    <section className="mb-18 overflow-hidden">
       <div className="max-w-7xl mx-auto px-5">
         <div>
           <div className="relative bg-[url('/assets/images/globe.png')] bg-cover bg-center bg-no-repeat">
             {/* overlay */}
-            <div className="absolute inset-0 bg-[#121212]/50 z-1" />
+            <div className="absolute inset-0 bg-[#010103]/50 z-1" />
 
             {/* content */}
             <div className="relative z-10">
