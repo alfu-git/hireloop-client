@@ -4,7 +4,7 @@ import React from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { TbCoinEuro } from "react-icons/tb";
 
-const SmartJobs = () => {
+const SmartJob = () => {
   const jobs = [
     {
       jobName: "Frontend Developer",
@@ -115,4 +115,4 @@ const SmartJobs = () => {
   );
 };
 
-export default SmartJobs;
+export default SmartJob;
