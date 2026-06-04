@@ -1,5 +1,6 @@
 import Banner from "@/components/homePage/Banner";
 import FeaturesJob from "@/components/homePage/FeaturesJob";
+import NextRole from "@/components/homePage/NextRole";
 import Pricing from "@/components/homePage/Pricing";
 import SmartJob from "@/components/homePage/SmartJob";
 import Stats from "@/components/homePage/Stats";
@@ -12,6 +13,7 @@ export default function Home() {
       <SmartJob />
       <FeaturesJob />
       <Pricing />
+      <NextRole />
     </>
   );
 }
