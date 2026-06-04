@@ -94,13 +94,17 @@ const Navbar = () => {
           </div>
 
           <div className="flex sm:gap-4 items-center">
-            <Button className="sm:px-6 sm:h-13 bg-transparent text-[#5C53FE] text-base sm:text-lg font-semibold">
-              Sign In
-            </Button>
+            <Link href="/sign-in">
+              <Button className="sm:px-6 sm:h-13 bg-transparent text-[#5C53FE] text-base sm:text-lg font-semibold">
+                Sign In
+              </Button>
+            </Link>
 
-            <Button className="sm:px-6 sm:h-13 bg-white rounded-lg text-[#0B0B14] text-base sm:text-lg font-medium">
-              Get Started
-            </Button>
+            <Link href="/sign-up">
+              <Button className="sm:px-6 sm:h-13 bg-white rounded-lg text-[#0B0B14] text-base sm:text-lg font-medium">
+                Get Started
+              </Button>
+            </Link>
           </div>
         </div>
       </header>

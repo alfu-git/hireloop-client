@@ -10,15 +10,14 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { Eye, Lock, User } from "lucide-react";
+import { Eye, Lock } from "lucide-react";
 import Link from "next/link";
-import { IoIosLink } from "react-icons/io";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 // import GoogleLoginBtn from "../shared/GoogleLoginBtn";
 
-const SignUpForm = () => {
+const LogInForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,25 +31,21 @@ const SignUpForm = () => {
 
     setLoading(true);
 
-    const { data, error } = await authClient.signUp.email({
-      name: userData.name,
+    const { data, error } = await authClient.signIn.email({
       email: userData.email,
-      image: userData.image,
       password: userData.password,
+      callbackURL: "/",
     });
 
     setLoading(false);
 
     if (error) {
-      toast.error(<p className="text-black font-bold">{error.message}</p>);
+      toast.error(<h6 className="font-bold text-black">{error.message}</h6>);
     }
 
     if (data) {
-      toast.success(
-        <h6 className="font-bold">Account Created Successfully</h6>,
-      );
-
-      router.push("login");
+      toast.success(<h6 className="font-bold text-black">Login Successful</h6>);
+      router.push("/");
     }
   };
 
@@ -60,25 +55,6 @@ const SignUpForm = () => {
   return (
     <div className="p-10 bg-linear-to-t from-[#010102] to-[#313131] rounded-3xl">
       <Form onSubmit={handleOnSubmit} className="space-y-6">
-        {/* name */}
-        <TextField isRequired type="text">
-          <Label className="text-white">Full name</Label>
-
-          <InputGroup className={inputGroupClass}>
-            <InputGroup.Prefix>
-              <User className="size-4 text-primary" />
-            </InputGroup.Prefix>
-
-            <InputGroup.Input
-              name="name"
-              placeholder="Enter your name"
-              className={"pl-3"}
-            />
-          </InputGroup>
-
-          <FieldError />
-        </TextField>
-
         {/* email */}
         <TextField
           isRequired
@@ -101,25 +77,6 @@ const SignUpForm = () => {
             <InputGroup.Input
               name="email"
               placeholder="you@example.com"
-              className={"pl-3"}
-            />
-          </InputGroup>
-
-          <FieldError />
-        </TextField>
-
-        {/* image_url */}
-        <TextField isRequired type="url">
-          <Label className="text-white">Image URL</Label>
-
-          <InputGroup className={inputGroupClass}>
-            <InputGroup.Prefix>
-              <IoIosLink className="size-4 text-primary" />
-            </InputGroup.Prefix>
-
-            <InputGroup.Input
-              name="image"
-              placeholder="Photo url"
               className={"pl-3"}
             />
           </InputGroup>
@@ -193,7 +150,7 @@ const SignUpForm = () => {
             "w-full bg-[#5C53FE] hover:bg-[#5C53FE]/80 active:bg-[#5C53FE]/90 rounded-md"
           }
         >
-          {loading ? "Creating..." : "Create Account"}
+          {loading ? "Signing in..." : "Sign In"}
         </Button>
       </Form>
 
@@ -209,28 +166,17 @@ const SignUpForm = () => {
 
       {/* <GoogleLoginBtn /> */}
 
-      <p className="my-6 flex gap-1 flex-wrap justify-center text-xs text-center text-white">
-        <span>By creating an account, you agree to our</span>
-        <Link href={"/"} className="text-[#5C53FE] hover:text-[#5C53FE]/80">
-          Terms of Service
-        </Link>
-        and
-        <Link href={"/"} className="text-[#5C53FE] hover:text-[#5C53FE]/80">
-          Privacy Policy
-        </Link>
-      </p>
-
-      <p className="text-center text-sm text-white">
-        Already have an account?{" "}
+      <p className="mt-6 text-white text-center text-sm">
+        Don&apos;t have an account?{" "}
         <Link
-          href="/sign-in"
+          href="/sign-up"
           className="font-medium text-[#5C53FE] hover:text-[#5C53FE]/80"
         >
-          Sign in
+          Sign Up
         </Link>
       </p>
     </div>
   );
 };
 
-export default SignUpForm;
+export default LogInForm;
