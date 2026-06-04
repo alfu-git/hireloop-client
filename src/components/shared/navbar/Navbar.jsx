@@ -5,9 +5,15 @@ import { Link, Button } from "@heroui/react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { authClient } from "@/lib/auth-client";
+import AvatarDropdown from "./AvatarDropdown";
+import Loading from "../Loading";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
 
   const pathname = usePathname();
 
@@ -93,15 +99,21 @@ const Navbar = () => {
             <div className="mx-6 border-r border-[#A8A8A8]/40 h-5 my-auto" />
           </div>
 
-          <div className="flex sm:gap-4 items-center">
-            <Link href="/sign-in">
-              <Button className="sm:px-6 sm:h-13 bg-transparent text-[#5C53FE] text-base sm:text-lg font-semibold">
-                Sign In
-              </Button>
-            </Link>
+          <div className="flex gap-3 sm:gap-4 items-center">
+            {isPending ? (
+              <Loading />
+            ) : user ? (
+              <AvatarDropdown user={user} />
+            ) : (
+              <Link href="/sign-in">
+                <Button className="sm:px-6 sm:h-13 bg-transparent text-[#5C53FE] sm:text-lg font-semibold">
+                  Sign In
+                </Button>
+              </Link>
+            )}
 
             <Link href="/sign-up">
-              <Button className="sm:px-6 sm:h-13 bg-white rounded-lg text-[#0B0B14] text-base sm:text-lg font-medium">
+              <Button className="px-2 sm:px-6 h-9 sm:h-12 bg-white rounded-lg text-[#0B0B14] text-sm sm:text-lg font-medium">
                 Get Started
               </Button>
             </Link>
