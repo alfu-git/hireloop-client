@@ -8,6 +8,8 @@ import {
   Form,
   InputGroup,
   Label,
+  Radio,
+  RadioGroup,
   TextField,
 } from "@heroui/react";
 import { Eye, Lock, User } from "lucide-react";
@@ -37,6 +39,7 @@ const SignUpForm = () => {
       email: userData.email,
       image: userData.image,
       password: userData.password,
+      role: userData.role,
     });
 
     setLoading(false);
@@ -50,7 +53,7 @@ const SignUpForm = () => {
         <h6 className="font-bold">Account Created Successfully</h6>,
       );
 
-      router.push("login");
+      router.push("/sign-in");
     }
   };
 
@@ -185,6 +188,37 @@ const SignUpForm = () => {
 
           <FieldError />
         </TextField>
+
+        {/* role selection */}
+        <div className="flex flex-col gap-4">
+          <Label className="text-white">Select Role</Label>
+
+          <RadioGroup
+            defaultValue="seeker"
+            name="role"
+            orientation="horizontal"
+          >
+            <Radio value="seeker">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+
+              <Radio.Content>
+                <Label className="text-white opacity-80">Job Seeker</Label>
+              </Radio.Content>
+            </Radio>
+
+            <Radio value="recruiter">
+              <Radio.Control>
+                <Radio.Indicator />
+              </Radio.Control>
+
+              <Radio.Content>
+                <Label className="text-white opacity-80">Recruiter</Label>
+              </Radio.Content>
+            </Radio>
+          </RadioGroup>
+        </div>
 
         <Button
           isDisabled={loading}
