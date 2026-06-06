@@ -1,6 +1,6 @@
 "use client";
 
-import RecruiterStats from "@/components/dashboardPage/RecruiterStats";
+import RecruiterStats from "@/components/dashboardPage/recruiter/RecruiterStats";
 import { authClient } from "@/lib/auth-client";
 import React from "react";
 

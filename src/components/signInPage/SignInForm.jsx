@@ -71,13 +71,13 @@ const LogInForm = () => {
 
           <InputGroup className={inputGroupClass}>
             <InputGroup.Prefix>
-              <Envelope className="size-4 text-primary" />
+              <Envelope className="size-4 text-gray-600" />
             </InputGroup.Prefix>
 
             <InputGroup.Input
               name="email"
               placeholder="you@example.com"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
           </InputGroup>
 
@@ -109,14 +109,14 @@ const LogInForm = () => {
 
           <InputGroup className={inputGroupClass}>
             <InputGroup.Prefix>
-              <Lock className="size-4 text-primary" />
+              <Lock className="size-4 text-gray-600" />
             </InputGroup.Prefix>
 
             <InputGroup.Input
               name="password"
               type={isVisible ? "text" : "password"}
               placeholder="Create a password"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
 
             <InputGroup.Suffix className="pr-0">
@@ -126,6 +126,7 @@ const LogInForm = () => {
                 size="sm"
                 variant="ghost"
                 onPress={() => setIsVisible(!isVisible)}
+                className={"text-black hover:bg-transparent"}
               >
                 {isVisible ? (
                   <Eye className="size-4" />
