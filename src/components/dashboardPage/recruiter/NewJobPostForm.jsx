@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin, X } from "lucide-react";
+import { MapPin } from "lucide-react";
 import {
   Button,
   DateField,
@@ -19,6 +19,9 @@ import {
   TextField,
 } from "@heroui/react";
 import { Calendar } from "@gravity-ui/icons";
+import { jobPostAction } from "@/lib/actions/jobsAction";
+import toast from "react-hot-toast";
+import { redirect } from "next/navigation";
 
 const NewJobPostForm = () => {
   const [jobCategory, setJobCategory] = useState("");
@@ -36,7 +39,7 @@ const NewJobPostForm = () => {
   const isBenefitsValueInvalid =
     benefitsValue.length > 0 && benefitsValue.length < 20;
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -75,7 +78,12 @@ const NewJobPostForm = () => {
 
     setFormError("");
 
-    console.log(jobData);
+    const res = await jobPostAction(jobData);
+
+    if (res.insertedId) {
+      toast.success(`${jobData.jobTitle} job posted successfully`);
+      redirect("/dashboard/recruiter/jobs");
+    }
   };
 
   return (
@@ -95,13 +103,14 @@ const NewJobPostForm = () => {
 
       {/* body */}
       <div className="p-6">
+        {/* error message */}
         {formError && (
           <p className="mb-4 text-red-500 text-sm text-center">{formError}</p>
         )}
 
         <Form onSubmit={handleOnSubmit} className="space-y-6">
           {/* title + category */}
-          <div className="flex gap-6 items-center">
+          <div className="flex flex-col md:flex-row gap-6 items-center">
             {/* title */}
             <TextField className="w-full" name="jobTitle">
               <Label className="mb-2">Job Title</Label>
@@ -150,10 +159,10 @@ const NewJobPostForm = () => {
           </div>
 
           {/* type + salary range */}
-          <div className="grid grid-cols-6 gap-6 items-center">
+          <div className="grid grid-cols lg:grid-row lg:grid-cols-6 gap-6 items-center">
             {/* type */}
             <Select
-              className="w-full col-span-2"
+              className="w-full lg:col-span-2"
               placeholder="Select one"
               value={jobType}
               onChange={(value) => setJobType(value)}
@@ -196,7 +205,7 @@ const NewJobPostForm = () => {
             </Select>
 
             {/* salary range */}
-            <div className="col-span-4">
+            <div className="lg:col-span-4">
               <Label>Salary Range</Label>
 
               <div className="mt-2 grid grid-cols-3 gap-3 items-center">
@@ -246,8 +255,8 @@ const NewJobPostForm = () => {
           </div>
 
           {/* location + deadline date */}
-          <div className="grid grid-cols-6 gap-6 items-center">
-            <div className="col-span-4">
+          <div className="grid md:grid-cols-6 gap-6 items-center">
+            <div className="md:col-span-4">
               <div className="flex justify-between items-center">
                 <Label className="mb-2">Location</Label>
 
@@ -294,7 +303,7 @@ const NewJobPostForm = () => {
               </TextField>
             </div>
 
-            <DateField className="w-full col-span-2" name="deadlineDate">
+            <DateField className="w-full md:col-span-2" name="deadlineDate">
               <Label className="mb-2">Date</Label>
 
               <DateField.Group>
