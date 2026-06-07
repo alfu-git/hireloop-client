@@ -57,6 +57,9 @@ const NewJobPostForm = () => {
       responsibilities: responsibilitiesValue,
       requirements: requirementsValue,
       benefits: benefitsValue,
+      companyId: "123",
+      status: "active",
+      isPubliclyVisible: true,
     };
 
     if (

@@ -1,45 +1,63 @@
 import {
-  Bell,
-  Envelope,
   Gear,
   House,
   LayoutSideContentLeft,
   Magnifier,
+  CirclePlus,
+  Factory,
+  Envelope,
   Person,
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
+import Link from "next/link";
 
 export function DashboardSideBar() {
   const navItems = [
-    { icon: House, label: "Home" },
-    { icon: Magnifier, label: "Search" },
-    { icon: Bell, label: "Notifications" },
-    { icon: Envelope, label: "Messages" },
-    { icon: Person, label: "Profile" },
-    { icon: Gear, label: "Settings" },
+    { icon: House, href: "/dashboard/recruiter", label: "Home" },
+    { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
+    {
+      icon: CirclePlus,
+      href: "/dashboard/recruiter/jobs/new",
+      label: "Post A Job",
+    },
+    {
+      icon: Factory,
+      href: "/dashboard/recruiter/company",
+      label: "Company Profile",
+    },
+    {
+      icon: Envelope,
+      href: "/dashboard/recruiter/messages",
+      label: "Messages",
+    },
+    { icon: Person, href: "/dashboard/recruiter/profile", label: "Profile" },
+    { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
   ];
 
   const navContent = (
     <nav className="flex flex-col gap-1">
       {navItems.map((item) => (
-        <button
-          key={item.label}
-          className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
-          type="button"
-        >
-          <item.icon className="size-5 text-muted" />
-          {item.label}
-        </button>
+        <Link href={item?.href} key={item.label}>
+          <button
+            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-foreground transition-colors hover:bg-default"
+            type="button"
+          >
+            <item.icon className="size-5 text-muted" />
+            {item.label}
+          </button>
+        </Link>
       ))}
     </nav>
   );
 
   return (
     <>
-      <aside className="hidden w-64 shrink-0 border-r border-default p-4 lg:block">{navContent}</aside>
+      <aside className="hidden w-64 shrink-0 border-r border-default p-4 lg:block">
+        {navContent}
+      </aside>
 
       <Drawer>
-        <Button variant="secondary" className={'lg:hidden'}>
+        <Button variant="secondary" className={"lg:hidden"}>
           <LayoutSideContentLeft />
           Sidebar
         </Button>
