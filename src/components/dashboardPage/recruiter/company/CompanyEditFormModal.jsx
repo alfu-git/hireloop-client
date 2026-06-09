@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { MapPin, Plus } from "lucide-react";
+import { MapPin, Pencil } from "lucide-react";
 import {
   Button,
   Description,
@@ -18,17 +18,24 @@ import {
 } from "@heroui/react";
 import toast from "react-hot-toast";
 import Image from "next/image";
-import { companyCreateAction } from "@/lib/actions/actions";
+import { companyUpdateAction } from "@/lib/actions/actions";
 import { useRouter } from "next/navigation";
 
-const CompanyRegisterFormModal = ({ recruiter }) => {
-  const [companyCategory, setCompanyCategory] = useState("");
-  const [employeeCount, setEmployeeCount] = useState("");
-  const [description, setDescription] = useState("");
+const CompanyEditFormModal = ({ recruiter, company }) => {
+  const [companyCategory, setCompanyCategory] = useState(
+    `${company?.category}`,
+  );
+  const [employeeCount, setEmployeeCount] = useState(
+    `${company?.employeeCount}`,
+  );
+  const [description, setDescription] = useState(`${company?.description}`);
   const [formError, setFormError] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  // ✅ NEW (easy change tracking)
+  const [isChanged, setIsChanged] = useState(false);
 
   const router = useRouter();
 
@@ -57,6 +64,7 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
 
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
+    setIsChanged(true); // ✅ added
   };
 
   // ✅ memory cleanup (pro)
@@ -69,49 +77,42 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // ✅ NEW validation
+    if (!isChanged) {
+      setFormError("Please update at least one field to continue.");
+      return;
+    } else {
+      setFormError("");
+    }
+
     const formData = new FormData(e.target);
 
     let imageUrl = "";
-
     // ✅ upload first
     if (imageFile) {
       imageUrl = await uploadImageToImgbb(imageFile);
     }
 
-    const companyData = {
-      recruiterId: recruiter?.id,
-      companyName: formData.get("companyName"),
-      category: companyCategory,
-      websiteUrl: formData.get("websiteUrl"),
-      location: formData.get("location"),
-      employeeCount: employeeCount,
-      description: description,
-      logo: imageUrl, // ✅ URL added
+    const companyUpdatedData = {
+      companyName: formData.get("companyName") || company?.companyName,
+      category: companyCategory || company?.category,
+      websiteUrl: formData.get("websiteUrl") || company?.websiteUrl,
+      location: formData.get("location") || company?.location,
+      employeeCount: employeeCount || company?.employeeCount,
+      description: description || company?.description,
+      logo: imageUrl || company?.logo, // ✅ URL added
     };
-
-    if (
-      !companyData.companyName ||
-      !companyData.category ||
-      !companyData.websiteUrl ||
-      !companyData.location ||
-      !companyData.employeeCount ||
-      !companyData.description
-    ) {
-      setFormError("Please fill all required fields.");
-      return;
-    }
-
-    setFormError("");
 
     try {
       setLoading(true);
-      const res = await companyCreateAction(companyData);
+      const res = await companyUpdateAction(recruiter?.id, companyUpdatedData);
 
-      if (res.insertedId) {
-        toast.success("Company registered successfully");
-        router.refresh("/dashboard/recruiter/company");
+      if (res?.modifiedCount > 0) {
+        toast.success("Details Updated Successfully");
+        router.refresh();
       }
     } catch (error) {
+      console.log("error: ", error);
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -122,10 +123,10 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
     <Modal>
       <Button
         className={
-          "px-5 h-12 bg-white text-base text-[#1A1C1C] font-semibold shadow-[0_3px_10px_0_rgba(255,255,255,0.2)]"
+          "px-0 h-auto bg-transparent text-base text-white font-semibold"
         }
       >
-        <Plus /> Register a company
+        <Pencil /> Edit Profile
       </Button>
 
       <Modal.Backdrop>
@@ -153,17 +154,24 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                 onSubmit={handleSubmit}
                 className="p-6 space-y-6 bg-[#010103] border-y border-[#444748]"
               >
+                {/* name + category */}
                 <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <TextField className="w-full" name="companyName">
+                  <TextField
+                    className="w-full"
+                    name="companyName"
+                    defaultValue={company?.companyName}
+                  >
                     <Label className="mb-2">Company Name</Label>
-                    <Input placeholder="e.g. Acme Corp" />
+                    <Input onChange={() => setIsChanged(true)} />
                   </TextField>
 
                   <Select
                     className="w-full"
-                    placeholder="Select one"
                     value={companyCategory}
-                    onChange={(value) => setCompanyCategory(value)}
+                    onChange={(value) => {
+                      setCompanyCategory(value);
+                      setIsChanged(true);
+                    }}
                   >
                     <Label className="mb-2">Industry/Category</Label>
 
@@ -183,8 +191,13 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                   </Select>
                 </div>
 
+                {/* website + location */}
                 <div className="flex flex-col md:flex-row gap-6 items-center">
-                  <TextField className="w-full" name="websiteUrl">
+                  <TextField
+                    className="w-full"
+                    name="websiteUrl"
+                    defaultValue={company?.websiteUrl}
+                  >
                     <Label className="mb-2">Website</Label>
 
                     <InputGroup>
@@ -192,12 +205,16 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                       <InputGroup.Input
                         className="w-full"
                         type="url"
-                        placeholder="www.company.com"
+                        onChange={() => setIsChanged(true)}
                       />
                     </InputGroup>
                   </TextField>
 
-                  <TextField className="w-full" name="location">
+                  <TextField
+                    className="w-full"
+                    name="location"
+                    defaultValue={company?.location}
+                  >
                     <Label className="mb-2">Location</Label>
 
                     <InputGroup>
@@ -207,18 +224,21 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
 
                       <InputGroup.Input
                         className="w-full"
-                        placeholder="City, Country"
+                        onChange={() => setIsChanged(true)}
                       />
                     </InputGroup>
                   </TextField>
                 </div>
 
+                {/* employee count + logo */}
                 <div className="flex flex-col md:flex-row gap-6">
                   <Select
                     className="w-full"
-                    placeholder="Select one"
                     value={employeeCount}
-                    onChange={(value) => setEmployeeCount(value)}
+                    onChange={(value) => {
+                      setEmployeeCount(value);
+                      setIsChanged(true);
+                    }}
                   >
                     <Label className="mb-2">Employee Count Range</Label>
 
@@ -258,18 +278,14 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                       />
 
                       <div className="flex items-center gap-4">
-                        <span className="p-5 border-2 border-dashed border-white/20 hover:border-white/40 rounded-xl cursor-pointer overflow-hidden">
-                          {imagePreview ? (
-                            <Image
-                              src={imagePreview}
-                              alt="preview"
-                              width={48}
-                              height={48}
-                              className="w-12 h-12 object-cover rounded"
-                            />
-                          ) : (
-                            <Plus className="block size-6 text-white/60 group-hover:text-white transition" />
-                          )}
+                        <span className="p-2 border-2 border-dashed border-white/20 hover:border-white/40 rounded-xl cursor-pointer overflow-hidden">
+                          <Image
+                            src={imagePreview || company?.logo}
+                            alt="preview"
+                            width={48}
+                            height={48}
+                            className="w-12 h-12 object-cover rounded"
+                          />
                         </span>
 
                         <div className="text-center">
@@ -286,11 +302,15 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                   </div>
                 </div>
 
+                {/* description */}
                 <TextField
                   isInvalid={isDescriptionInvalid}
-                  name="responsibilities"
+                  name="description"
                   value={description}
-                  onChange={setDescription}
+                  onChange={(value) => {
+                    setDescription(value);
+                    setIsChanged(true);
+                  }}
                 >
                   <Label className="mb-2">Brief Description</Label>
 
@@ -310,6 +330,7 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                   )}
                 </TextField>
 
+                {/* CTA */}
                 <div className="flex justify-end items-center gap-6">
                   <Button
                     type="reset"
@@ -321,11 +342,11 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
                   </Button>
 
                   <Button
-                    isDisabled={loading}
+                    isDisabled={loading || !isChanged}
                     type="submit"
                     className={"px-8 bg-white text-[#131314] rounded-lg"}
                   >
-                    {loading ? "Registering..." : "Register Company"}
+                    {loading ? "Updating..." : "Update"}
                   </Button>
                 </div>
               </Form>
@@ -337,4 +358,4 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
   );
 };
 
-export default CompanyRegisterFormModal;
+export default CompanyEditFormModal;

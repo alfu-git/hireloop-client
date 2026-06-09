@@ -1,3 +1,5 @@
+import { getServerMutation } from "../actions/server";
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getJobsByCompanyId = async (companyId, status = "active") => {
@@ -5,4 +7,8 @@ export const getJobsByCompanyId = async (companyId, status = "active") => {
     `${baseUrl}/jobs?companyId=${companyId}&status=${status}`,
   );
   return res.json();
+};
+
+export const getCompaniesByRecruiterId = async (recruiterId) => {
+  return getServerMutation(`/my-companies?recruiterId=${recruiterId}`)
 };

@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@heroui/react";
 import { Calendar } from "@gravity-ui/icons";
-import { jobPostAction } from "@/lib/actions/jobsAction";
+import { jobPostAction } from "@/lib/actions/actions";
 import toast from "react-hot-toast";
 import { redirect } from "next/navigation";
 
