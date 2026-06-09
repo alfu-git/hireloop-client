@@ -1,5 +1,7 @@
 "use server";
 
+import { postServerMutation } from "./server";
+
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const jobPostAction = async (newJobData) => {
@@ -12,4 +14,8 @@ export const jobPostAction = async (newJobData) => {
   });
 
   return res.json();
+};
+
+export const companyCreateAction = async (companyData) => {
+  return postServerMutation("/companies", companyData);
 };

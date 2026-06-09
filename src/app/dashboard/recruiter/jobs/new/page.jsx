@@ -1,4 +1,4 @@
-import NewJobPostForm from "@/components/dashboardPage/recruiter/NewJobPostForm";
+import NewJobPostForm from "@/components/dashboardPage/recruiter/jobs/NewJobPostForm";
 import React from "react";
 
 const NewJobPostPage = () => {
