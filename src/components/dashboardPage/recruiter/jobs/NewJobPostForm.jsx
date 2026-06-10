@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MapPin } from "lucide-react";
+import { BriefcaseBusiness, MapPin } from "lucide-react";
 import {
   Button,
   DateField,
@@ -21,9 +21,9 @@ import {
 import { Calendar } from "@gravity-ui/icons";
 import { jobPostAction } from "@/lib/actions/actions";
 import toast from "react-hot-toast";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
-const NewJobPostForm = () => {
+const NewJobPostForm = ({ company }) => {
   const [jobCategory, setJobCategory] = useState("");
   const [jobType, setJobType] = useState("");
   const [currency, setCurrency] = useState("");
@@ -31,6 +31,9 @@ const NewJobPostForm = () => {
   const [requirementsValue, setRequirementsValue] = useState("");
   const [benefitsValue, setBenefitsValue] = useState("");
   const [formError, setFormError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const isResponsibilitiesValueInvalid =
     responsibilitiesValue.length > 0 && responsibilitiesValue.length < 20;
@@ -38,6 +41,10 @@ const NewJobPostForm = () => {
     requirementsValue.length > 0 && requirementsValue.length < 20;
   const isBenefitsValueInvalid =
     benefitsValue.length > 0 && benefitsValue.length < 20;
+
+  const expectedCompany = company.find(
+    (com) => com.companyName === "Acme Corp",
+  );
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -57,9 +64,11 @@ const NewJobPostForm = () => {
       responsibilities: responsibilitiesValue,
       requirements: requirementsValue,
       benefits: benefitsValue,
-      companyId: "123",
-      status: "active",
+      status: "Active",
       isPubliclyVisible: true,
+      companyId: expectedCompany?._id,
+      companyName: expectedCompany?.companyName,
+      companyLogo: expectedCompany?.logo,
     };
 
     if (
@@ -81,11 +90,20 @@ const NewJobPostForm = () => {
 
     setFormError("");
 
-    const res = await jobPostAction(jobData);
+    try {
+      setLoading(true);
 
-    if (res.insertedId) {
-      toast.success(`${jobData.jobTitle} job posted successfully`);
-      redirect("/dashboard/recruiter/jobs");
+      const res = await jobPostAction(jobData);
+
+      if (res.insertedId) {
+        toast.success(`${jobData.jobTitle} job posted successfully`);
+        router.push("/dashboard/recruiter/jobs");
+      }
+    } catch (error) {
+      toast.error("Something Went Wrong!");
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -94,12 +112,31 @@ const NewJobPostForm = () => {
       className={`w-full max-w-3xl mx-auto bg-[#0f0f0f] border ${formError ? "border-red-500" : "border-white/10"} rounded-2xl shadow-2xl overflow-hidden`}
     >
       {/* header */}
-      <div className="flex justify-between items-center px-6 py-4 border-b border-white/10">
-        <div>
-          <h2 className="mb-2 text-2xl font-semibold">Post a New Job</h2>
+      <div className="px-6 py-4 border-b border-white/10">
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="mb-2 text-2xl font-semibold">Post a New Job</h2>
 
-          <p className="text-sm text-white/50">
-            Fill job details to hire candidates
+            <p className="text-sm text-white/50">
+              Fill job details to hire candidates
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-3 py-1 px-2 max-w-fit bg-[#18181B] border border-white/10 rounded-lg">
+          <p className="text-sm flex gap-1.5 items-center">
+            <span className="flex gap-1.5 items-center text-white/50">
+              <BriefcaseBusiness className="w-4 h-4" />
+              <span>Posting as:</span>
+            </span>
+
+            <span className="text-white font-medium">
+              {expectedCompany?.companyName || "No Company Found"}
+            </span>
+
+            <span className="py-0.5 px-2 bg-green-500/10 border border-green-400/40 text-green-500 font-medium rounded-md text-xs">
+              Approved
+            </span>
           </p>
         </div>
       </div>
@@ -412,8 +449,12 @@ const NewJobPostForm = () => {
               Cancel
             </Button>
 
-            <Button type="submit" className={"bg-[#5C53FE] rounded-lg"}>
-              Post Job
+            <Button
+              type="submit"
+              isDisabled={loading}
+              className={"bg-[#5C53FE] rounded-lg"}
+            >
+              {loading ? "Posting..." : "Post Job"}
             </Button>
           </div>
         </Form>

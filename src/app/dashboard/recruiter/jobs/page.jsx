@@ -1,11 +1,13 @@
-import { getJobsByCompanyId } from "@/lib/api/data";
+import { getJobsByCompanyId, getLoggedInRecruiterCompany } from "@/lib/api/data";
 import { Button, Table } from "@heroui/react";
 import { Eye, PencilLine, Trash2 } from "lucide-react";
 import React from "react";
 
 const RecruiterJobsPage = async () => {
-  const companyId = "123";
-  const jobs = await getJobsByCompanyId(companyId);
+  const company = await getLoggedInRecruiterCompany();
+  const expectedCompany = company.find(com => com.companyName === "Acme Corp");
+
+  const jobs = await getJobsByCompanyId(expectedCompany?._id);
 
   return (
     <section className="my-15">
