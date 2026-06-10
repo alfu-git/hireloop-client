@@ -3,11 +3,14 @@ import { getUserSession } from "../session";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
+export const getAllJobs = async () => {
+  return  getServerMutation("/company-jobs");
+};
+
 export const getJobsByCompanyId = async (companyId, status = "Active") => {
-  const res = await fetch(
-    `${baseUrl}/company-jobs?companyId=${companyId}&status=${status}`,
+  return getServerMutation(
+    `/company-jobs?companyId=${companyId}&status=${status}`,
   );
-  return res.json();
 };
 
 export const getCompaniesByRecruiterId = async (recruiterId) => {
