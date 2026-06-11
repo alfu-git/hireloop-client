@@ -15,14 +15,16 @@ import {
 import { Eye, Lock, User } from "lucide-react";
 import Link from "next/link";
 import { IoIosLink } from "react-icons/io";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-// import GoogleLoginBtn from "../shared/GoogleLoginBtn";
 
 const SignUpForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/sign-in";
 
   const router = useRouter();
 
@@ -53,7 +55,7 @@ const SignUpForm = () => {
         <h6 className="font-bold">Account Created Successfully</h6>,
       );
 
-      router.push("/sign-in");
+      router.push(redirectTo);
     }
   };
 
@@ -75,7 +77,7 @@ const SignUpForm = () => {
             <InputGroup.Input
               name="name"
               placeholder="Enter your name"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
           </InputGroup>
 
@@ -104,7 +106,7 @@ const SignUpForm = () => {
             <InputGroup.Input
               name="email"
               placeholder="you@example.com"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
           </InputGroup>
 
@@ -123,7 +125,7 @@ const SignUpForm = () => {
             <InputGroup.Input
               name="image"
               placeholder="Photo url"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
           </InputGroup>
 
@@ -162,7 +164,7 @@ const SignUpForm = () => {
               name="password"
               type={isVisible ? "text" : "password"}
               placeholder="Create a password"
-              className={"pl-3"}
+              className={"pl-3 text-black"}
             />
 
             <InputGroup.Suffix className="pr-0">
@@ -231,18 +233,6 @@ const SignUpForm = () => {
         </Button>
       </Form>
 
-      <div className="my-6 flex items-center">
-        <div className="grow border-t border-white opacity-70"></div>
-
-        <span className="mx-2 text-white opacity-70 text-sm uppercase">
-          or Continue with
-        </span>
-
-        <div className="grow border-t border-white opacity-70"></div>
-      </div>
-
-      {/* <GoogleLoginBtn /> */}
-
       <p className="my-6 flex gap-1 flex-wrap justify-center text-xs text-center text-white">
         <span>By creating an account, you agree to our</span>
         <Link href={"/"} className="text-[#5C53FE] hover:text-[#5C53FE]/80">
@@ -257,7 +247,7 @@ const SignUpForm = () => {
       <p className="text-center text-sm text-white">
         Already have an account?{" "}
         <Link
-          href="/sign-in"
+          href={`/sign-in?redirect=${redirectTo}`}
           className="font-medium text-[#5C53FE] hover:text-[#5C53FE]/80"
         >
           Sign in

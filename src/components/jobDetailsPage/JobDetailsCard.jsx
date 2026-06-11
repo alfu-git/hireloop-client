@@ -46,7 +46,7 @@ const JobDetailsCard = ({ job }) => {
 
         <Link href={`/browse-jobs/${job?._id}/apply`}>
           <Button className="bg-linear-to-r from-indigo-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-xl hover:opacity-90 transition">
-            Apply Now
+            Apply
           </Button>
         </Link>
       </div>

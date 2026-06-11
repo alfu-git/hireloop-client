@@ -161,7 +161,7 @@ const JobApplyForm = ({ job }) => {
               isDisabled={loading}
               className="bg-[#5C53FE] rounded-lg"
             >
-              {loading ? "Submitting..." : "Apply Now"}
+              {loading ? "Submitting..." : "Submit"}
             </Button>
           </div>
         </Form>

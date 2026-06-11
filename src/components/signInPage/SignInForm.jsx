@@ -12,14 +12,16 @@ import {
 } from "@heroui/react";
 import { Eye, Lock } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-// import GoogleLoginBtn from "../shared/GoogleLoginBtn";
 
 const LogInForm = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") || "/";
 
   const router = useRouter();
 
@@ -34,7 +36,6 @@ const LogInForm = () => {
     const { data, error } = await authClient.signIn.email({
       email: userData.email,
       password: userData.password,
-      callbackURL: "/",
     });
 
     setLoading(false);
@@ -45,7 +46,7 @@ const LogInForm = () => {
 
     if (data) {
       toast.success(<h6 className="font-bold text-black">Login Successful</h6>);
-      router.push("/");
+      router.push(redirectTo);
     }
   };
 
@@ -155,22 +156,10 @@ const LogInForm = () => {
         </Button>
       </Form>
 
-      <div className="my-6 flex items-center">
-        <div className="grow border-t border-white opacity-70"></div>
-
-        <span className="mx-2 text-white opacity-70 text-sm uppercase">
-          or Continue with
-        </span>
-
-        <div className="grow border-t border-white opacity-70"></div>
-      </div>
-
-      {/* <GoogleLoginBtn /> */}
-
       <p className="mt-6 text-white text-center text-sm">
         Don&apos;t have an account?{" "}
         <Link
-          href="/sign-up"
+          href={`/sign-up?redirect=${redirectTo}`}
           className="font-medium text-[#5C53FE] hover:text-[#5C53FE]/80"
         >
           Sign Up
