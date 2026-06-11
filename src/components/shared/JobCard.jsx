@@ -7,6 +7,7 @@ import {
 } from "react-icons/hi";
 import { TbCoinEuro } from "react-icons/tb";
 import { Button } from "@heroui/react";
+import Link from "next/link";
 
 const JobCard = ({ job }) => {
   return (
@@ -45,9 +46,13 @@ const JobCard = ({ job }) => {
         </span>
       </div>
 
-      <Button className={"px-0 h-auto bg-transparent text-base font-semibold"}>
-        Apply Now <FaArrowRightLong />
-      </Button>
+      <Link href={`/browse-jobs/${job?._id}`}>
+        <Button
+          className={"px-0 h-auto bg-transparent text-base font-semibold"}
+        >
+          Apply Now <FaArrowRightLong />
+        </Button>
+      </Link>
     </div>
   );
 };

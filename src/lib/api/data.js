@@ -4,7 +4,11 @@ import { getUserSession } from "../session";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getAllJobs = async () => {
-  return  getServerMutation("/company-jobs");
+  return getServerMutation("/company-jobs");
+};
+
+export const getJobById = async (jobId) => {
+  return getServerMutation(`/company-jobs/${jobId}`);
 };
 
 export const getJobsByCompanyId = async (companyId, status = "Active") => {

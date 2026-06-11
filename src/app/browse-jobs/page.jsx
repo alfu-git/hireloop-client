@@ -1,3 +1,4 @@
+import JobSearchAndFilterField from "@/components/browseJobsPage/JobSearchAndFilterField";
 import JobCard from "@/components/shared/JobCard";
 import { getAllJobs } from "@/lib/api/data";
 import React from "react";
@@ -10,7 +11,7 @@ const BrowseJobsPage = async () => {
       <div className="max-w-7xl mx-auto px-5">
         <div>
           {/* title */}
-          <div className="mb-10">
+          <div className="my-10">
             <h2 className="text-2xl font-bold">
               Browse Jobs That Match Your Ambition
             </h2>
@@ -21,8 +22,11 @@ const BrowseJobsPage = async () => {
             </p>
           </div>
 
+          {/* search + filter field */}
+          <JobSearchAndFilterField />
+
           {/* all jobs */}
-          <div className="mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {jobs.map((job) => (
               <JobCard key={job?._id} job={job} />
             ))}

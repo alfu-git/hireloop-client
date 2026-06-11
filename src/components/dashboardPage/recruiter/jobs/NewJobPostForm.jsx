@@ -21,7 +21,7 @@ import {
 import { Calendar } from "@gravity-ui/icons";
 import { jobPostAction } from "@/lib/actions/actions";
 import toast from "react-hot-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const NewJobPostForm = ({ company }) => {
   const [jobCategory, setJobCategory] = useState("");
