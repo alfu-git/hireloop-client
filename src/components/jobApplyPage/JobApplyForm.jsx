@@ -12,11 +12,15 @@ import {
   TextField,
 } from "@heroui/react";
 import toast from "react-hot-toast";
+import { applicationPostAction } from "@/lib/actions/actions";
+import { useRouter } from "next/navigation";
 
 const JobApplyForm = ({ job }) => {
   const [coverLetter, setCoverLetter] = useState("");
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const isCoverLetterInvalid =
     coverLetter.length > 0 && coverLetter.length < 20;
@@ -27,9 +31,9 @@ const JobApplyForm = ({ job }) => {
     const formData = new FormData(e.target);
 
     const applyData = {
-      fullName: formData.get("fullName"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
+      applicantName: formData.get("name"),
+      applicantEmail: formData.get("email"),
+      applicantNumber: formData.get("phone"),
       resumeLink: formData.get("resumeLink"),
       coverLetter,
       jobId: job?._id,
@@ -38,9 +42,9 @@ const JobApplyForm = ({ job }) => {
     };
 
     if (
-      !applyData.fullName ||
-      !applyData.email ||
-      !applyData.phone ||
+      !applyData.applicantName ||
+      !applyData.applicantEmail ||
+      !applyData.applicantNumber ||
       !applyData.resumeLink ||
       !applyData.coverLetter
     ) {
@@ -58,10 +62,12 @@ const JobApplyForm = ({ job }) => {
     try {
       setLoading(true);
 
-      // 👉 API call here
-      console.log(applyData);
+      const res = await applicationPostAction(applyData);
 
-      toast.success("Application submitted successfully!");
+      if (res.insertedId) {
+        toast.success(`Application submitted! Best of luck!`);
+        router.push("/");
+      }
     } catch (error) {
       toast.error("Something went wrong!");
       console.log(error);
@@ -97,7 +103,7 @@ const JobApplyForm = ({ job }) => {
         <Form onSubmit={handleOnSubmit} className="space-y-6">
           {/* full name + email */}
           <div className="flex flex-col md:flex-row gap-6">
-            <TextField className="w-full" name="fullName">
+            <TextField className="w-full" name="name">
               <Label className="mb-2">Full Name</Label>
               <Input placeholder="Enter your full name" />
             </TextField>
