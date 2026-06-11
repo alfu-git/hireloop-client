@@ -9,6 +9,7 @@ import {
 import { TbCoinEuro } from "react-icons/tb";
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const JobDetailsCard = ({ job }) => {
   const getCurrencyIcon = () => {
@@ -43,9 +44,11 @@ const JobDetailsCard = ({ job }) => {
           </div>
         </div>
 
-        <Button className="bg-linear-to-r from-indigo-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-xl hover:opacity-90 transition">
-          Apply Now
-        </Button>
+        <Link href={`/browse-jobs/${job?._id}/apply`}>
+          <Button className="bg-linear-to-r from-indigo-500 to-purple-600 text-white font-semibold px-8 py-3 rounded-xl hover:opacity-90 transition">
+            Apply Now
+          </Button>
+        </Link>
       </div>
 
       {/* Info Tags */}
