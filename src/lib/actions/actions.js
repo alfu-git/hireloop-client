@@ -1,6 +1,10 @@
 "use server";
 
-import { postServerMutation, updateServerMutation } from "./server";
+import {
+  getServerMutation,
+  postServerMutation,
+  updateServerMutation,
+} from "./server";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 

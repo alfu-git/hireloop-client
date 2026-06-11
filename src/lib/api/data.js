@@ -1,8 +1,6 @@
 import { getServerMutation } from "../actions/server";
 import { getUserSession } from "../session";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 export const getAllJobs = async () => {
   return getServerMutation("/company-jobs");
 };
@@ -15,6 +13,10 @@ export const getJobsByCompanyId = async (companyId, status = "Active") => {
   return getServerMutation(
     `/company-jobs?companyId=${companyId}&status=${status}`,
   );
+};
+
+export const getApplicationsByApplicantId = async (applicantId) => {
+  return getServerMutation(`/all-applications?applicantId=${applicantId}`);
 };
 
 export const getCompaniesByRecruiterId = async (recruiterId) => {

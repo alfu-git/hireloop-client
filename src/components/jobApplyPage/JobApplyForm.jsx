@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { applicationPostAction } from "@/lib/actions/actions";
 import { useRouter } from "next/navigation";
 
-const JobApplyForm = ({ job }) => {
+const JobApplyForm = ({ applicant, job }) => {
   const [coverLetter, setCoverLetter] = useState("");
   const [formError, setFormError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,6 +31,7 @@ const JobApplyForm = ({ job }) => {
     const formData = new FormData(e.target);
 
     const applyData = {
+      applicantId: applicant?.id,
       applicantName: formData.get("name"),
       applicantEmail: formData.get("email"),
       applicantNumber: formData.get("phone"),
