@@ -13,6 +13,7 @@ const PricingPageContent = () => {
   const pricingData = {
     seekers: [
       {
+        id: "seeker_free",
         name: "Free",
         price: 0,
         icon: <AiTwotoneCrown className="w-5 h-5" />,
@@ -24,6 +25,7 @@ const PricingPageContent = () => {
         ],
       },
       {
+        id: "seeker_pro",
         name: "Pro",
         price: 19,
         highlight: true,
@@ -36,6 +38,7 @@ const PricingPageContent = () => {
         ],
       },
       {
+        id: "seeker_premium",
         name: "Premium",
         price: 39,
         icon: <IoFlash className="w-5 h-5" />,
@@ -50,6 +53,7 @@ const PricingPageContent = () => {
 
     recruiters: [
       {
+        id: "recruiter_free",
         name: "Free",
         price: 0,
         icon: <AiTwotoneCrown className="w-5 h-5" />,
@@ -60,6 +64,7 @@ const PricingPageContent = () => {
         ],
       },
       {
+        id: "recruiter_growth",
         name: "Growth",
         price: 49,
         highlight: true,
@@ -72,6 +77,7 @@ const PricingPageContent = () => {
         ],
       },
       {
+        id: "recruiter_enterprise",
         name: "Enterprise",
         price: 149,
         icon: <IoFlash className="w-5 h-5" />,
@@ -131,7 +137,7 @@ const PricingPageContent = () => {
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`p-6 rounded-3xl border transition ${
+            className={`p-6 rounded-3xl border transition flex flex-col ${
               plan.highlight
                 ? "bg-[#151516] border-white/20 scale-[1.02]"
                 : "bg-[#0B0B0D] border-white/10"
@@ -164,16 +170,25 @@ const PricingPageContent = () => {
             </div>
 
             {/* Button */}
-            <Button
-              className={`w-full h-12 rounded-xl font-medium flex justify-between items-center ${
-                plan.highlight
-                  ? "bg-white text-black"
-                  : "bg-white/10 text-white"
-              }`}
-            >
-              <span>Choose Plan</span>
-              <ArrowRight size={18} />
-            </Button>
+            <div className="mt-auto">
+              <form action="/api/checkout_sessions" method="POST">
+                <section>
+                  <input type="hidden" name="plan_id" value={plan?.id} />
+                  <Button
+                    type="submit"
+                    role="link"
+                    className={`w-full h-12 rounded-xl font-medium flex justify-between items-center ${
+                      plan.highlight
+                        ? "bg-white text-black"
+                        : "bg-white/10 text-white"
+                    }`}
+                  >
+                    <span>Choose Plan</span>
+                    <ArrowRight size={18} />
+                  </Button>
+                </section>
+              </form>
+            </div>
           </div>
         ))}
       </div>
