@@ -28,3 +28,7 @@ export const getLoggedInRecruiterCompany = async () => {
   const user = session?.user;
   return await getCompaniesByRecruiterId(user?.id);
 };
+
+export const getPlanByPlanId = async (planId) => {
+  return getServerMutation(`/plans?planId=${planId}`);
+};

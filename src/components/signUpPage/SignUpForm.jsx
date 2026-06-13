@@ -34,6 +34,8 @@ const SignUpForm = () => {
     const formData = new FormData(e.target);
     const userData = Object.fromEntries(formData.entries());
 
+    const plan = userData?.role === "seeker" ? "seeker_free" : "recruiter_free";
+
     setLoading(true);
 
     const { data, error } = await authClient.signUp.email({
@@ -42,6 +44,7 @@ const SignUpForm = () => {
       image: userData.image,
       password: userData.password,
       role: userData.role,
+      plan,
     });
 
     setLoading(false);

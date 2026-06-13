@@ -1,5 +1,9 @@
 import JobApplyForm from "@/components/jobApplyPage/JobApplyForm";
-import { getApplicationsByApplicantId, getJobById } from "@/lib/api/data";
+import {
+  getApplicationsByApplicantId,
+  getJobById,
+  getPlanByPlanId,
+} from "@/lib/api/data";
 import { getUserSession } from "@/lib/session";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -30,10 +34,7 @@ const JobApplyPage = async ({ params }) => {
     );
   }
 
-  const plan = {
-    name: "Free",
-    maxApplicationsPerMonth: 3,
-  };
+  const plan = await getPlanByPlanId(user?.plan);
 
   return (
     <section className="my-20">

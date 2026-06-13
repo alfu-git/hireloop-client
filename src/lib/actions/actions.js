@@ -27,3 +27,7 @@ export const companyUpdateAction = async (recruiterId, updatedData) => {
     "/dashboard/recruiter/company",
   );
 };
+
+export const postSubscriptionInfo = async (subsInfo) => {
+  return postServerMutation("/subscriptions", subsInfo);
+};
