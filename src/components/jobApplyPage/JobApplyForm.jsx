@@ -40,6 +40,7 @@ const JobApplyForm = ({ applicant, job }) => {
       jobId: job?._id,
       jobTitle: job?.jobTitle,
       companyName: job?.companyName,
+      status: "Applied",
     };
 
     if (

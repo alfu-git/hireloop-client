@@ -21,7 +21,7 @@ export async function DashboardSideBar() {
 
   const seekerNavLinks = [
     { icon: MdOutlineDashboard, href: "/dashboard/seeker", label: "Dashboard" },
-    { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
+    { icon: Magnifier, href: "/browse-jobs", label: "Jobs" },
     {
       icon: FaRegBookmark,
       href: "/dashboard/seeker/saved-jobs",
