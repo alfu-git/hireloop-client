@@ -45,6 +45,21 @@ const Navbar = () => {
           Pricing
         </Link>
       </li>
+
+      {user?.email && (
+        <li>
+          <Link
+            href={
+              user?.role === "seeker"
+                ? "/dashboard/seeker"
+                : "/dashboard/recruiter"
+            }
+            className={`${pathname === "/dashboard/seeker" || pathname === "/dashboard/recruiter" ? "text-[#5C53FE] font-bold" : "text-white text-base"}`}
+          >
+            Dashboard
+          </Link>
+        </li>
+      )}
     </>
   );
 

@@ -1,3 +1,4 @@
+import { getUserSession } from "@/lib/session";
 import {
   Gear,
   House,
@@ -10,9 +11,36 @@ import {
 } from "@gravity-ui/icons";
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
+import { FaMoneyBill, FaRegBookmark } from "react-icons/fa";
+import { MdOutlineDashboard } from "react-icons/md";
+import { RiPagesLine } from "react-icons/ri";
 
-export function DashboardSideBar() {
-  const navItems = [
+export async function DashboardSideBar() {
+  const userSession = await getUserSession();
+  const user = userSession?.user;
+
+  const seekerNavLinks = [
+    { icon: MdOutlineDashboard, href: "/dashboard/seeker", label: "Dashboard" },
+    { icon: Magnifier, href: "/dashboard/seeker/jobs", label: "Jobs" },
+    {
+      icon: FaRegBookmark,
+      href: "/dashboard/seeker/saved-jobs",
+      label: "Saved Jobs",
+    },
+    {
+      icon: RiPagesLine,
+      href: "/dashboard/seeker/applications",
+      label: "Applications",
+    },
+    {
+      icon: FaMoneyBill,
+      href: "/dashboard/seeker/billing",
+      label: "Billing",
+    },
+    { icon: Gear, href: "/dashboard/seeker/settings", label: "Settings" },
+  ];
+
+  const recruiterNavLinks = [
     { icon: House, href: "/dashboard/recruiter", label: "Home" },
     { icon: Magnifier, href: "/dashboard/recruiter/jobs", label: "Jobs" },
     {
@@ -33,6 +61,9 @@ export function DashboardSideBar() {
     { icon: Person, href: "/dashboard/recruiter/profile", label: "Profile" },
     { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
   ];
+
+  const navItems =
+    user?.role === "seeker" ? seekerNavLinks : recruiterNavLinks || [];
 
   const navContent = (
     <nav className="flex flex-col gap-1">
