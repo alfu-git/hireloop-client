@@ -19,6 +19,10 @@ export const getApplicationsByApplicantId = async (applicantId) => {
   return getServerMutation(`/all-applications?applicantId=${applicantId}`);
 };
 
+export const getAllCompanies = async () => {
+  return getServerMutation("/my-companies");
+};
+
 export const getCompaniesByRecruiterId = async (recruiterId) => {
   return getServerMutation(`/my-companies?recruiterId=${recruiterId}`);
 };

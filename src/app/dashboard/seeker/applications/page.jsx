@@ -9,7 +9,7 @@ const ApplicationsPage = async () => {
   const user = userSession?.user;
 
   const userApplications = await getApplicationsByApplicantId(user?.id);
-  console.log(userApplications);
+  
   return (
     <section className="my-20 text-white">
       <div className="max-w-7xl mx-auto px-5">

@@ -80,6 +80,7 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
 
     const companyData = {
       recruiterId: recruiter?.id,
+      recruiterEmail: recruiter?.email,
       companyName: formData.get("companyName"),
       category: companyCategory,
       websiteUrl: formData.get("websiteUrl"),
