@@ -56,19 +56,36 @@ const RecruiterCompanyPage = async () => {
                           />
                         </figure>
 
-                        <div>
-                          <h4 className="mb-1 text-2xl font-bold">
-                            {company?.companyName}
-                          </h4>
+                        <div className="flex gap-5">
+                          <div>
+                            <h4 className="mb-1 text-2xl font-bold">
+                              {company?.companyName}
+                            </h4>
 
-                          <Link
-                            href={company?.websiteUrl}
-                            target="_blank"
-                            className="text-sm text-[#C4C7C8] flex gap-1.5 items-center"
+                            <Link
+                              href={company?.websiteUrl}
+                              target="_blank"
+                              className="text-sm text-[#C4C7C8] flex gap-1.5 items-center"
+                            >
+                              <Globe className="w-4 h-4" />
+                              <span>{company?.websiteUrl}</span>
+                            </Link>
+                          </div>
+
+                          <span
+                            className={`
+                              py-0.5 px-2 border font-medium rounded-md text-xs max-h-fit
+                              ${
+                                company?.status === "Pending"
+                                  ? "bg-yellow-500/10 border-yellow-400/40 text-yellow-500"
+                                  : company?.status === "Approved"
+                                    ? "bg-green-500/10 border-green-400/40 text-green-500"
+                                    : "bg-red-500/10 border-red-400/40 text-red-500"
+                              }
+                            `}
                           >
-                            <Globe className="w-4 h-4" />
-                            <span>{company?.websiteUrl}</span>
-                          </Link>
+                            {company?.status}
+                          </span>
                         </div>
                       </div>
 

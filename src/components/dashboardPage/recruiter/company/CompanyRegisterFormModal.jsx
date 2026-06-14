@@ -86,7 +86,8 @@ const CompanyRegisterFormModal = ({ recruiter }) => {
       location: formData.get("location"),
       employeeCount: employeeCount,
       description: description,
-      logo: imageUrl, // ✅ URL added
+      logo: imageUrl, // ✅ URL added,
+      status: "Pending",
     };
 
     if (
