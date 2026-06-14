@@ -12,8 +12,10 @@ import {
 import { Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { FaMoneyBill, FaRegBookmark } from "react-icons/fa";
+import { LuUsers } from "react-icons/lu";
 import { MdOutlineDashboard } from "react-icons/md";
 import { RiPagesLine } from "react-icons/ri";
+import { TbBriefcase2 } from "react-icons/tb";
 
 export async function DashboardSideBar() {
   const userSession = await getUserSession();
@@ -62,8 +64,33 @@ export async function DashboardSideBar() {
     { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
   ];
 
+  const adminNavLinks = [
+    { icon: MdOutlineDashboard, href: "/dashboard/admin", label: "Dashboard" },
+    { icon: LuUsers, href: "/dashboard/admin/users", label: "Users" },
+    {
+      icon: Factory,
+      href: "/dashboard/admin/companies",
+      label: "Companies",
+    },
+    {
+      icon: TbBriefcase2,
+      href: "/dashboard/admin/jobs",
+      label: "Jobs",
+    },
+    {
+      icon: FaMoneyBill,
+      href: "/dashboard/admin/payments",
+      label: "Payments",
+    },
+    { icon: Gear, href: "/dashboard/recruiter/settings", label: "Settings" },
+  ];
+
   const navItems =
-    user?.role === "seeker" ? seekerNavLinks : recruiterNavLinks || [];
+    user?.role === "seeker"
+      ? seekerNavLinks
+      : user?.role === "recruiter"
+        ? recruiterNavLinks
+        : adminNavLinks || [];
 
   const navContent = (
     <nav className="flex flex-col gap-1">

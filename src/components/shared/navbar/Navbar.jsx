@@ -52,9 +52,11 @@ const Navbar = () => {
             href={
               user?.role === "seeker"
                 ? "/dashboard/seeker"
-                : "/dashboard/recruiter"
+                : user?.role === "recruiter"
+                  ? "/dashboard/recruiter"
+                  : "/dashboard/admin"
             }
-            className={`${pathname === "/dashboard/seeker" || pathname === "/dashboard/recruiter" ? "text-[#5C53FE] font-bold" : "text-white text-base"}`}
+            className={`${pathname === "/dashboard/seeker" || pathname === "/dashboard/recruiter" || pathname === "/dashboard/admin" ? "text-[#5C53FE] font-bold" : "text-white text-base"}`}
           >
             Dashboard
           </Link>
