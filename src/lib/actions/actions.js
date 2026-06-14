@@ -1,10 +1,6 @@
 "use server";
 
-import {
-  getServerMutation,
-  postServerMutation,
-  updateServerMutation,
-} from "./server";
+import { postServerMutation, updateServerMutation } from "./server";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -30,4 +26,12 @@ export const companyUpdateAction = async (recruiterId, updatedData) => {
 
 export const postSubscriptionInfo = async (subsInfo) => {
   return postServerMutation("/subscriptions", subsInfo);
+};
+
+export const companyStatusUpdateAction = async (companyId, updateData) => {
+  return updateServerMutation(
+    `/companies/${companyId}`,
+    updateData,
+    "/dashboard/admin/companies",
+  );
 };
