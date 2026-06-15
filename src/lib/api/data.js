@@ -1,4 +1,7 @@
-import { getServerMutation } from "../actions/server";
+import {
+  getServerMutation,
+  protectedGetServerMutation,
+} from "../actions/server";
 import { getUserSession } from "../session";
 
 export const getAllJobs = async () => {
@@ -16,11 +19,13 @@ export const getJobsByCompanyId = async (companyId, status = "Active") => {
 };
 
 export const getApplicationsByApplicantId = async (applicantId) => {
-  return getServerMutation(`/all-applications?applicantId=${applicantId}`);
+  return protectedGetServerMutation(
+    `/all-applications?applicantId=${applicantId}`,
+  );
 };
 
 export const getAllCompanies = async () => {
-  return getServerMutation("/my-companies");
+  return protectedGetServerMutation("/my-companies");
 };
 
 export const getCompaniesByRecruiterId = async (recruiterId) => {

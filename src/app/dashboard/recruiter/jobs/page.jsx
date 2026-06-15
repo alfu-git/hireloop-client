@@ -5,7 +5,7 @@ import React from "react";
 
 const RecruiterJobsPage = async () => {
   const company = await getLoggedInRecruiterCompany();
-  const expectedCompany = company.find(com => com.companyName === "Acme Corp");
+  const expectedCompany = company[0];
 
   const jobs = await getJobsByCompanyId(expectedCompany?._id);
 

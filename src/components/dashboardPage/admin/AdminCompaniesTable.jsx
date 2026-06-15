@@ -43,6 +43,9 @@ const AdminCompaniesTable = ({ companies }) => {
             <Table.Column className={"text-center"}>
               Industry
             </Table.Column>
+            <Table.Column className={"text-center"}>
+              Total Jobs
+            </Table.Column>
             <Table.Column className={"text-center"}>Status</Table.Column>
             <Table.Column className={"text-center"}>
               Date Submitted
@@ -63,6 +66,10 @@ const AdminCompaniesTable = ({ companies }) => {
 
                 <Table.Cell className={"text-center"}>
                   {company?.category}
+                </Table.Cell>
+
+                <Table.Cell className={"text-center"}>
+                  {company?.totalJobs}
                 </Table.Cell>
 
                 <Table.Cell>

@@ -2,10 +2,8 @@
 
 import { postServerMutation, updateServerMutation } from "./server";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-
 export const jobPostAction = async (newJobData) => {
-  return postServerMutation(`${baseUrl}/jobs`, newJobData);
+  return postServerMutation(`/jobs`, newJobData);
 };
 
 export const applicationPostAction = async (applyData) => {
