@@ -4,8 +4,8 @@ import {
 } from "../actions/server";
 import { getUserSession } from "../session";
 
-export const getAllJobs = async () => {
-  return getServerMutation("/company-jobs");
+export const getAllJobs = async (searchQueryString) => {
+  return getServerMutation(`/company-jobs?${searchQueryString}`);
 };
 
 export const getJobById = async (jobId) => {

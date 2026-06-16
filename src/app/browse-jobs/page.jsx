@@ -3,8 +3,13 @@ import JobCard from "@/components/shared/JobCard";
 import { getAllJobs } from "@/lib/api/data";
 import React from "react";
 
-const BrowseJobsPage = async () => {
-  const jobs = await getAllJobs();
+const BrowseJobsPage = async ({ searchParams }) => {
+  const filters = await searchParams;
+
+  const searchQuery = new URLSearchParams(filters);
+  const searchQueryString = searchQuery.toString();
+
+  const jobs = await getAllJobs(searchQueryString);
 
   return (
     <section className="my-20 text-white">
@@ -23,7 +28,7 @@ const BrowseJobsPage = async () => {
           </div>
 
           {/* search + filter field */}
-          <JobSearchAndFilterField />
+          <JobSearchAndFilterField filters={filters} />
 
           {/* all jobs */}
           <div className="my-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
