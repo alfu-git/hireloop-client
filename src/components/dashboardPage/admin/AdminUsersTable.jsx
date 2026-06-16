@@ -1,10 +1,14 @@
 'use client'
 
+import { setUserRole } from "@/lib/set-user-role";
 import { Button, Table } from "@heroui/react";
 import { BriefcaseBusiness, User } from "lucide-react";
 import React from 'react';
 
 const AdminUsersTable = ({ users }) => {
+  const handleUserRole = async (userId, role) => {
+    await setUserRole(userId, role)
+  }
   return (
     <Table>
       <Table.ScrollContainer>
@@ -67,15 +71,15 @@ const AdminUsersTable = ({ users }) => {
 
                 <Table.Cell>
                   <div className={"flex gap-2 max-h-fit my-auto"}>
-                    {user?.role === "recruiter" && <Button className={'px-0 h-auto bg-transparent text-gray-300'}>
+                    {user?.role === "recruiter" && <Button onClick={() => handleUserRole(user?.id, "seeker")} className={'px-0 h-auto bg-transparent text-gray-300'}>
                       Make Seeker
                     </Button>}
 
-                    {user?.role === "seeker" && <Button className={'px-0 h-auto bg-transparent text-gray-300'}>
+                    {user?.role === "seeker" && <Button onClick={() => handleUserRole(user?.id, "recruiter")} className={'px-0 h-auto bg-transparent text-gray-300'}>
                       Make Recruiter
                     </Button>}
 
-                    {user?.role !== "admin" && <Button className={'px-0 h-auto bg-transparent text-gray-300'}>
+                    {user?.role !== "admin" && <Button onClick={() => handleUserRole(user?.id, "admin")} className={'px-0 h-auto bg-transparent text-gray-300'}>
                       Make Admin
                     </Button>}
                   </div>

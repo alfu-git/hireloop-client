@@ -5,7 +5,7 @@ import React from 'react';
 const AdminUsersPage = async () => {
   const data = await getAllUsers();
   const users = data?.users;
-  console.log(users);
+
   return (
     <section className='my-20 text-white'>
       <div className='max-w-7xl mx-auto px-5'>
